@@ -1,0 +1,60 @@
+html { 
+  height: 100%; 
+}
+
+@media only screen and (min-device-width: 800px) { 
+  html { 
+    overflow: hidden; 
+  } 
+}
+
+
+@-ms-viewport { width: device-width; }
+
+body { 
+  background-color:#000; 
+  height: 100%;
+  overflow:hidden; 
+  margin:0; 
+  padding:0; 
+  font-family:Arial, Helvetica, sans-serif; 
+  font-size:16px; 
+  color:#fff; 
+}
+
+path.path {
+  fill: none;
+  stroke: rgb(49,79,79);
+  opacity: 0.7;
+  stroke-width: 10px;
+  stroke-linecap: round;
+  cursor: pointer;
+}
+
+circle {
+  &.base {
+    fill: #fff;
+    stroke: #fff;
+  }
+
+  &.dot {
+    fill: steelblue;
+  }
+}
+
+#map {
+  position: fixed;
+
+  &.opened {
+    right: 0;
+    top: 0;
+    width: 30%;
+  }
+
+  &.closed {
+    right: 10px;
+    top: 10px;
+    width: 70px;
+  }
+}
+

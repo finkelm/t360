@@ -42,6 +42,19 @@ circle {
   }
 }
 
+.triangle {
+  .inner {
+    fill: #000;
+    opacity: 0.4;
+  }
+
+  .outer {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1px;
+  }
+}
+
 #map {
   position: fixed;
 

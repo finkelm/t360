@@ -31,12 +31,8 @@
      camroll="true"
      friction="0.0"
      touch_mode="full"
-     sensor_mode="1"
+     sensor_mode="3"
      autocalibration="true"
-     onavailable=""
-     onunavailable=""
-     onenable=""
-     ondisable=""
      />
 
 

@@ -1,4 +1,4 @@
-(function () {
+/* (function () {
     "use strict";
 
     var methods, generateNewMethod, i, j, cur, old, addEvent;
@@ -34,7 +34,7 @@
     window.onerror = function (msg, url, line) {
         alert("Window error: " + msg + ", " + url + ", line " + line);
     };
-}());
+}()); */
 
 window.onload = function () {
   var paths = [
@@ -119,10 +119,19 @@ window.onload = function () {
     .attr("cx", 0)
     .attr("cy", 0);
 
-  var triangle = avatar.append('path').attr("class", "triangle")
-    .attr("d",'M -3,0 L 3,0 L 25,-37 L -25,-37 Z')
-    .attr("opacity", "0.7")
-    .attr("fill", "black"); // 'M -3,0, L 0,-8, L 3,0 Z'
+  var triangle = avatar.append("g").attr("class", "triangle");
+  triangle.append("path").attr("class", "inner")
+    .attr("d",d3.svg.arc()
+                .innerRadius(0)
+                .outerRadius(70)
+                .startAngle((-60/180) * Math.PI)
+                .endAngle((60/180) * Math.PI));
+  triangle.append("path").attr("class", "outer")
+    .attr("d",d3.svg.arc()
+                .innerRadius(0)
+                .outerRadius(70)
+                .startAngle((-60/180) * Math.PI)
+                .endAngle((60/180) * Math.PI));
 
   var dot = avatar.append("circle").attr("class", "dot")
     .attr("r", 3)

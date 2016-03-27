@@ -13,7 +13,7 @@
 
 	<!-- add the gyroscope plugin -->
 	<plugin name="videointerface_gyro"
-	        url.html5.and.no-desktop.and.panovideosupport="%SWFPATH%/gyro2.js"
+	        url.html5.and.no-desktop.and.panovideosupport="%CURRENTXML%/plugins/gyro2.js"
 	        enabled="true"
           camroll="true"
           friction="0.0"
@@ -30,7 +30,7 @@
   <style name="videointerface_modeimage" url="modeIcons.png" />
 
 	<!-- menu item styles -->
-	<style name="videointerface_menuitem_base"     url="%SWFPATH%/plugins/textfield.swf" align="lefttop" x="0" vcenter="true" width="160" height="26" padding="0 14" background="false" backgroundcolor="0xFFFFFF" backgroundalpha="0.25" border="false" onover="set(background,true);" onout="set(background,false);" ondown.touch="onover();" onup.touch="onout();" />
+	<style name="videointerface_menuitem_base"     url="%CURRENTXML%/plugins/textfield.swf" align="lefttop" x="0" vcenter="true" width="160" height="26" padding="0 14" background="false" backgroundcolor="0xFFFFFF" backgroundalpha="0.25" border="false" onover="set(background,true);" onout="set(background,false);" ondown.touch="onover();" onup.touch="onout();" />
 	<style name="videointerface_menuitem_normal"   enabled="true"  alpha="1.0" css="text-align:left; color:#FFFFFF; font-family:Arial; font-weight:bold; font-size:12px;" />
 	<style name="videointerface_menuitem_selected" enabled="true"  alpha="1.0" css="text-align:left; color:#FFFFFF; font-family:Arial; font-weight:bold; font-size:12px; text-decoration:underline;" />
 	<style name="videointerface_menuitem_disabled" enabled="false" alpha="0.5" css="text-align:left; color:#FFFFFF; font-family:Arial; font-weight:bold; font-size:12px;" />
@@ -99,8 +99,8 @@
 		       width.no-panovideosupport.and.no-fullscreensupport="-150"
 		  >
 			<!-- the playback time texts -->
-			<layer name="videointerface_t1" url="%SWFPATH%/plugins/textfield.swf" enabled="false" align="left"  width="44" autoheight="true" x="0" y="0" html="" css="text-align:right; color:#FFFFFF; font-family:Arial; font-weight:bold; font-size:12px;" background="false" border="false" />
-			<layer name="videointerface_t2" url="%SWFPATH%/plugins/textfield.swf" enabled="false" align="right" width="44" autoheight="true" x="0" y="0" html="" css="text-align:left;  color:#FFFFFF; font-family:Arial; font-weight:bold; font-size:12px;" background="false" border="false" />
+			<layer name="videointerface_t1" url="%CURRENTXML%/plugins/textfield.swf" enabled="false" align="left"  width="44" autoheight="true" x="0" y="0" html="" css="text-align:right; color:#FFFFFF; font-family:Arial; font-weight:bold; font-size:12px;" background="false" border="false" />
+			<layer name="videointerface_t2" url="%CURRENTXML%/plugins/textfield.swf" enabled="false" align="right" width="44" autoheight="true" x="0" y="0" html="" css="text-align:left;  color:#FFFFFF; font-family:Arial; font-weight:bold; font-size:12px;" background="false" border="false" />
 
 			<!-- the seek bar (click or drag anywhere on it to seek) -->
 			<layer name="videointerface_seekbar"

@@ -5,8 +5,8 @@
 
 	<!-- include the videoplayer plugin and load the video (use a low res video for iOS) -->
 	<plugin name="video"
-    url.flash="%SWFPATH%/plugins/videoplayer.swf"
-    url.html5="%SWFPATH%/plugins/videoplayer.js"
+    url.flash="%CURRENTXML%/plugins/videoplayer.swf"
+    url.html5="%CURRENTXML%/plugins/videoplayer.js"
 
     videourl.ios="../video/video-ios.mp4"
 

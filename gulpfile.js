@@ -10,7 +10,7 @@ var size = require('gulp-size');
 var sourcemaps = require('gulp-sourcemaps');
 var seq = require('run-sequence');
 var gpif = require('gulp-if');
-var prettify = require('gulp-jsbeautifier'); 
+var prettify = require('gulp-jsbeautifier');
 var gutil = require('gulp-util');
 var path = require('path');
 var newer = require('gulp-newer');
@@ -172,6 +172,7 @@ gulp.task('serve', ['set-browserSync', 'build'], function(callback) {
   gulp.watch('html/**/*.html', ['build:html']).on("change", browserSync.reload);
   gulp.watch('scripts/**/*.js', ['build:scripts']).on("change", browserSync.reload);
   gulp.watch('styles/**/*.scss', ['build:styles']);
+  gulp.watch('krpano/**/*.xml', ['copy']).on("change", browserSync.reload);
   gutil.log("[browserSync-server]", "http://localhost:7777");
 });
 

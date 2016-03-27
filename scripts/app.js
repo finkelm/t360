@@ -1,4 +1,4 @@
-/* (function () {
+(function () {
     "use strict";
 
     var methods, generateNewMethod, i, j, cur, old, addEvent;
@@ -34,45 +34,35 @@
     window.onerror = function (msg, url, line) {
         alert("Window error: " + msg + ", " + url + ", line " + line);
     };
-}()); */
+}());
 
 window.onload = function () {
   var paths = [
-    [ [85, 460],
-      [85, 110],
-      [125, 60],
-      [165, 110],
-      [140, 280],
-      [225, 310],
-      [280, 310],
-      [300, 230],
-      [340, 150],
-      [380, 230],
-      [400, 290],
-      [415, 310],
-      [430, 310],
-      [455, 310],
-      [465, 330],
-      [465, 350],
-      [465, 405]
-    ],
-    [ [110, 395],
-      [380, 395]
-    ]
+    "M389.6,401.9c0.4-19.5,1.5-100.3-15.8-145.2c-3.5-9.2-8.5-18.6-18.1-23.7c-15.4-8.3-34.6-1.3-47.5,3.4c-25.5,9.3-25.6,18.8-45.2,23.2c-4.8,1.1-30.6,6.3-47.5-7.9c-10.3-8.7-11.8-20.1-16.4-44.6c-3.2-17.1-8.3-42.5-15.8-74"
+  ];
+
+  // total length = 1311
+  var still_lengths = [
+    27.067881975182246,
+    189.45199926979015,
+    363.43498208544145,
+    429.15802427860655
   ];
 
   var svg = d3.select("#map")
     .append("svg")
+    .classed('video', true)
     .attr("viewBox", "0 0 500 500")
     .attr("width", "100%")
     .attr("height", "100%");
 
-  var floorPlanURL = "images/floorplan.jpg";
+  var floorPlanURL = "images/floorplan.png";
 
-  var img = svg.selectAll("image").data([0]);
+  var img = svg.selectAll(".map-image").data([0]);
 
   img.enter()
     .append("svg:image")
+    .classed("map-image", true)
     .attr('image-rendering','optimizeQuality')
     .attr("xlink:href", floorPlanURL)
     .attr("x", "0")
@@ -92,10 +82,8 @@ window.onload = function () {
     var path_rendered = svg
       .append("path")
       .classed('path', true)
-      .data([points])
-      .attr("d", d3.svg.line()
-        .tension(.7)
-        .interpolate("cardinal"))
+      //.data([points])
+      .attr("d", points)
       .on('mouseover', function(d) {
         d3.select(this).transition().duration(400).style('opacity','1');
       })
@@ -105,8 +93,8 @@ window.onload = function () {
         }
       });
     path_rendered.on("click", function() {
-      var path = d3.select(this), m = d3.svg.mouse(this), p = closestPoint(path.node(), m);
-      changeTime(pointToFraction(p))
+      var path = d3.select(this), m = d3.mouse(this), p = closestPoint(path.node(), m);
+      changeTime(pointToFraction(p));
       selectPath(path);
     });
     paths_rendered.push(path_rendered);
@@ -119,19 +107,22 @@ window.onload = function () {
     .attr("cx", 0)
     .attr("cy", 0);
 
+  var rawTriangle = '<radialGradient id="RadialGrad" cx="0" cy="0" r="120" gradientUnits="userSpaceOnUse"><stop  offset="0.2" style="stop-color:#020202;stop-opacity:0.95"/><stop  offset="0.2737" style="stop-color:#1C1C1C;stop-opacity:0.75"/><stop  offset="0.4758" style="stop-color:#393939;stop-opacity:0.65"/><stop  offset="0.648" style="stop-color:#CECFD1;stop-opacity:0.55"/><stop  offset="0.7982" style="stop-color:#D6D6D6;stop-opacity:0.35"/><stop  offset="0.9286" style="stop-color:#FFFFFF;stop-opacity:0.15"/></radialGradient>'
+
   var triangle = avatar.append("g").attr("class", "triangle");
+  triangle.html(rawTriangle);
   triangle.append("path").attr("class", "inner")
     .attr("d",d3.svg.arc()
                 .innerRadius(0)
-                .outerRadius(70)
+                .outerRadius(90)
                 .startAngle((-60/180) * Math.PI)
                 .endAngle((60/180) * Math.PI));
-  triangle.append("path").attr("class", "outer")
+  /*triangle.append("path").attr("class", "outer")
     .attr("d",d3.svg.arc()
                 .innerRadius(0)
                 .outerRadius(70)
                 .startAngle((-60/180) * Math.PI)
-                .endAngle((60/180) * Math.PI));
+                .endAngle((60/180) * Math.PI));*/
 
   var dot = avatar.append("circle").attr("class", "dot")
     .attr("r", 3)
@@ -143,6 +134,28 @@ window.onload = function () {
   selectPath(paths_rendered[0]);
   updatePointer(paths_rendered[0].node(), 0, 0);
 
+  var stillIcon = "images/location.png";
+  var still_points = svg.selectAll('.still-node').data(still_lengths);
+  still_points.enter()
+    .append("svg:image")
+    .classed("still-node", true)
+    .attr('image-rendering','optimizeQuality')
+    .attr("xlink:href", stillIcon)
+    .attr("x", function(d){ return paths_rendered[0].node().getPointAtLength(d).x - 15 })
+    .attr("y", function(d){ return paths_rendered[0].node().getPointAtLength(d).y - 15 })
+    .attr('height', "30px")
+    .attr('width', "30px");
+
+  still_points.on("click", function(d,i){
+    var totalTime = api.get('plugin[video].totaltime'),
+      currentPath = d3.select(".selected").node(),
+      pathLength = currentPath.getTotalLength();
+    api.call("seek_update("+(totalTime*still_lengths[i]/pathLength)+")");
+    window.setTimeout(function(){
+      api.call("plugin[video].play()");
+      api.call("plugin[video].pause()");
+    }, 1000)
+  });
 
   // Functions
   //Get path start point for placing marker
@@ -166,11 +179,12 @@ window.onload = function () {
 
   function pathStartPoint(path) {
     var firstSeg = path.node();
-    if(firstSeg && firstSeg.pathSegList){ 
+    return [0, 0];
+    if(firstSeg && firstSeg.pathSegList){
       firstSeg = firstSeg.pathSegList[0];
       return [firstSeg.x, firstSeg.y];
     }else{
-      return [0, 0]
+      return [0, 0];
     }
   }
 
@@ -244,12 +258,13 @@ window.onload = function () {
   function changeTime(proportion){
     var totalTime = api.get('plugin[video].totaltime');
     changingTime = proportion * totalTime;
-    api.get('plugin[video]').seek(proportion * totalTime);
+    //api.get('plugin[video]').seek(proportion * totalTime);
+    api.call("seek_update("+(proportion * totalTime)+"%)");
   }
 
   function updatePointer(path, length, yaw){
     var normAngle = getNormAngleFromNormal(path, length);
-    if(yaw){
+    if(yaw !== undefined || yaw !== null){
       triangle.attr("transform", function(d) {
         return "rotate("+(normAngle+yaw)+")";
       });
@@ -260,14 +275,21 @@ window.onload = function () {
     api = document.getElementById('krpanoSWFObject');
     //Here we just define the loop that'll pull values to update the UI
     mainLoopInterval = window.setInterval(mainLoop, 50);
+
+    window.setTimeout(function(){
+      api.call("plugin[video].play()");
+      api.call("plugin[video].pause()");
+    }, 1000)
   };
 
-  embedpano({swf:"krpano/krpano.swf", 
-             xml:"krpano/video.xml", 
-             target:"pano", 
-             html5:(document.domain ? "prefer" : "auto"), 
-             passQueryParameters:true, 
+  embedpano({swf:"krpano/krpano.swf",
+             xml:"krpano/video.xml",
+             target:"pano",
+             html5: "prefer",// (document.domain ? "prefer" : "auto"),
+             passQueryParameters:true,
              onready: onReadyHandler});
+
+  /*Updates location and direction of avatar*/
 
   var oldPoint = null;
   var oldYaw = null;
@@ -277,7 +299,7 @@ window.onload = function () {
     var currentPath = d3.select(".selected").node();
     var pathLength = currentPath.getTotalLength();
     var newPathLength = pathLength * (currentTime/totalTime);
-    if(newPathLength){
+    if(newPathLength !== undefined && !isNaN(newPathLength) && newPathLength !== null && currentPath !== undefined && currentPath !== null){
       var newPoint = currentPath.getPointAtLength(newPathLength);
       var newYaw = api.get('view.hlookat');
       if(oldPoint === null || oldPoint.x !== newPoint.x || oldPoint.y !== newPoint.y){
@@ -290,14 +312,44 @@ window.onload = function () {
           changingTime = null;
         }
       }
-      if(oldYaw === null || oldYaw !== newYaw){
-        oldYaw = newYaw;
-        updatePointer(currentPath, newPathLength, newYaw);
+      updatePointer(currentPath, newPathLength, newYaw);
+    }
+  }
+
+  /*Updates the mode (video/stills)*/
+  var oldMode = null;
+  function updateMode(){
+    var newMode = api.get('videointerface_mode');
+    if(newMode !== oldMode){
+      oldMode = newMode;
+      if(newMode == 'video'){
+        svg.classed('video', true);
+        svg.classed('still', false);
+      }else if(newMode == 'still'){
+        svg.classed('still', true);
+        svg.classed('video', false);
+        // Find the closest still node, move to it
+        var currentTime = api.get('plugin[video].time'),
+            currentPath = d3.select(".selected").node(),
+            pathLength = currentPath.getTotalLength(),
+            totalTime = api.get('plugin[video].totaltime'),
+            newPathLength = pathLength * (currentTime/totalTime);
+        var i = 0;
+        for(; i < still_lengths.length - 1; i++){
+          if(newPathLength < still_lengths[i]){ break }
+        }
+        api.call("seek_update("+(totalTime*still_lengths[i]/pathLength)+")");
+        window.setTimeout(function(){
+          api.call("plugin[video].play()");
+          api.call("plugin[video].pause()");
+        }, 1000)
+        //api.call('seek_update('+(totalTime*still_lengths[i]/pathLength)+')');
       }
     }
   }
 
   function mainLoop(){
     updateCircle();
+    updateMode();
   }
 };

@@ -13,8 +13,13 @@
 
 	<!-- add the gyroscope plugin -->
 	<plugin name="videointerface_gyro"
-	        url.html5.and.no-desktop.and.panovideosupport="%SWFPATH%/plugins/gyro.js"
-	        enabled="false"
+	        url.html5.and.no-desktop.and.panovideosupport="%SWFPATH%/gyro2.js"
+	        enabled="true"
+          camroll="true"
+          friction="0.0"
+          touch_mode="full"
+          sensor_mode="3"
+          autocalibration="true"
 	        onavailable="videointerface_enablemenuitem(configmenu, gyro);"
 	        />
 	        
@@ -22,7 +27,7 @@
 	<!-- base sprite-sheet images styles -->
 	<style name="videointerface_baseimage"  url="videointerface_skin.png" />
 	<style name="videointerface_pauseimage" url="videointerface_playpause.png" />
-
+  <style name="videointerface_modeimage" url="modeIcons.png" />
 
 	<!-- menu item styles -->
 	<style name="videointerface_menuitem_base"     url="%SWFPATH%/plugins/textfield.swf" align="lefttop" x="0" vcenter="true" width="160" height="26" padding="0 14" background="false" backgroundcolor="0xFFFFFF" backgroundalpha="0.25" border="false" onover="set(background,true);" onout="set(background,false);" ondown.touch="onover();" onup.touch="onout();" />
@@ -78,11 +83,17 @@
 		       align="left" x="8" scale="0.5"
 		       onclick="videointerface_togglepause();"
 		       />
-
+    <!-- the video/stills button -->
+		<layer name="videointerface_mode_button"
+		       style="videointerface_modeimage|videointerface_glow"
+		       align="left" x="50" scale="0.14"
+           crop="0|0|200|200"
+		       onclick="videointerface_togglemode();"
+		       />
 		<!-- the seeking controls and the loading/time bar -->
 		<layer name="videointerface_seekcontrols"
 		       type="container"
-		       align="left" x="50" height="100%"
+		       align="left" x="72" height="100%"
 		       width.panovideosupport.and.fullscreensupport="-220"
 		       width.no-panovideosupport.and.fullscreensupport.or.panovideosupport.and.no-fullscreensupport="-180"
 		       width.no-panovideosupport.and.no-fullscreensupport="-150"
@@ -280,6 +291,32 @@
 		callwith(layer[videointerface_control_bar], tween(alpha|y, 1.0|20, 0.5, easeOutCubic|easeOutQuad) );
 	</action>
 
+  <!-- toggle between video and still interface -->
+  <action name="videointerface_togglemode">
+    if(videointerface_mode == "video",
+      videointerface_set_mode_still();
+      ,
+      videointerface_set_mode_video();
+    );
+  </action>
+
+  <!-- set mode to still -->
+  <action name="videointerface_set_mode_still">
+    set(videointerface_mode, "still");
+    set(layer[videointerface_mode_button].crop, 0|201|200|200);
+    set(layer[videointerface_pp_button].visible,false);
+    set(layer[videointerface_pauseimage].visible,false);
+    plugin[get(videointerface_video)].pause();
+  </action>
+
+  <!-- set mode to video -->
+  <action name="videointerface_set_mode_video">
+    set(videointerface_mode, "video");
+    set(layer[videointerface_mode_button].crop, 0|0|200|200);
+    set(layer[videointerface_pp_button].visible,true);
+    set(layer[videointerface_pauseimage].visible,true);
+  </action>
+
 	<!-- toggle between shown and hidden interface -->
 	<action name="videointerface_toggle_interface">
 		if(videointerface_shown, videointerface_hide_interface(), videointerface_show_interface() );
@@ -401,7 +438,8 @@
 	<action name="videointerface_videoready">
 		<!-- start updating the video times -->
 		videointerface_update_videoinfo();
-
+    plugin[get(videointerface_video)].play();
+    plugin[get(videointerface_video)].pause();
 		<!-- when paused on start, show a play button -->
 		if(plugin[get(videointerface_video)].pausedonstart,
 			set(pause_scale, 1.0);
@@ -411,7 +449,9 @@
 			tween(layer[videointerface_pp_image].scale, get(pause_scale), 0.15, default);
 		  );
 
-    videointerface_normal_view()
+    videointerface_normal_view();
+    set(videointerface_mode, "video");
+     
 	</action>
 
 
@@ -527,6 +567,8 @@
 	<!-- videointerface_hidemenu(name=%1) -->
 	<action name="videointerface_hidemenu">
 		set(layer[videointerface_%1_menu].state, 'closed');
+On December 28 that year, Pornhub revealed that she was the #1 ranked porn star on their website,[12] replacing retired Lisa Ann. Her newfound notoriety quickly drew strong criticism from many in the Middle East, who branded her career choice as shameful and Khalifa herself a disgrace to her country.[13]
+
 		tween(layer[videointerface_%1_menu].y, -10);
 	</action>
 

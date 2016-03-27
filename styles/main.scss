@@ -22,6 +22,25 @@ body {
   color:#fff; 
 }
 
+svg.still {
+  .path {
+    display: none;
+  }
+  .still-node {
+    cursor: pointer;
+  }
+}
+
+center {
+  display: none;
+}
+
+svg.video {
+  .still-node {
+    display: none;
+  }
+}
+
 path.path {
   fill: none;
   stroke: rgb(49,79,79);
@@ -44,7 +63,7 @@ circle {
 
 .triangle {
   .inner {
-    fill: #000;
+    fill: url(#RadialGrad);
     opacity: 0.4;
   }
 

@@ -13,7 +13,7 @@
     videourl.no-ios="../video/video.mp4"
 
     pausedonstart="true"
-    loop="true"
+    loop="false"
     enabled="false"
     zorder="0"
     align="center" ox="0" oy="0"
@@ -24,17 +24,6 @@
     onloaded="videointerface_setup_interface(get(name)); setup_video_controls();"
     onvideoready="videointerface_videoready();"
     />
-
-   <plugin name="gyro" devices="html5" keep="true"
-     url="gyro2.js" 
-     enabled="true"
-     camroll="true"
-     friction="0.0"
-     touch_mode="full"
-     sensor_mode="3"
-     autocalibration="true"
-     />
-
 
 	<!-- custom control setup - add items for selecting videos with a different resolution/quality -->
 	<action name="setup_video_controls">
@@ -60,6 +49,11 @@
 		videointerface_selectmenuitem(configmenu, %1);
 	</action>
 
+  <action name="seek_update">
+    plugin[video].seek(%1);
+    plugin[video].play();
+    plugin[video].pause();
+	</action>
 
 	<!-- the panoramic video image -->
 	<image devices="panovideosupport">
